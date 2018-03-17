@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <math.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+struct Tuple {
+        int* arr;
+        int no;
+     };
+
+int sort(struct Tuple tu){
+    int* S = tu.arr;
+    int n = tu.no;
+    int i=0, j=0, t;
+    for(i=0;i<n-1;i++){
+        for(j=0;j<n-i-1;j++){
+            if(*(S+j)>=*(S+j+1))
+            {
+                t=*(S+j);
+                *(S+j)=*(S+j+1);
+                *(S+j+1)=t;
+            }
+        }
+    }
+    for(int k=0;k<n;k++){
+        printf(" %d ",*(S+k));
+    }
+    return 0;
+} 
+
+int * toArray(int number)
+{
+    int n = log10(number) + 1;
+    int i;
+    int *numberArray = (int *)malloc(sizeof(int)*n);
+    for ( i = n-1; i >= 0; --i)
+    {
+        numberArray[i] = number % 10;
+        number /= 10;
+    }
+    return numberArray;
+}
+
+bool containsInt(int* A, int in){
+    int x;
+    for (int i=0;i<10;i++){
+        if (*(A+i)==in){
+            x=1;
+        }
+    }
+    switch(x){
+        case 1: return true;
+        break;
+        default: return false;
+    }
+}
+     
+struct Tuple filter(int* A, int size){
+    int j=0, k;
+    int* S = (int*)malloc(sizeof(int)*10);
+    for (int i=0;i<size;i++){
+                    if(containsInt(toArray(*(A+i)), 1)&&containsInt(toArray(*(A+i)), 2)&&containsInt(toArray(*(A+i)), 3)){
+                *(S+j)=*(A+i);
+                j++;
+            }
+        }    
+        if (j==0)
+            printf("-1");
+        
+        struct Tuple t;
+        t.arr = S;
+        t.no = j;
+    
+    return t;
+}
+
+int main() {
+    int n;
+    int A[5] = {123, 1232, 456, 234, 32145};
+    n = sizeof(A)/sizeof(A[0]);
+    sort(filter(A, n));
+	return 0;
+}
